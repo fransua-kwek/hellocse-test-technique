@@ -12,12 +12,12 @@ final readonly class AccountStatus
      */
     public function __construct(private ?string $accountStatus)
     {
-        $error = ! in_array($accountStatus, AccountStatusEnum::CASES_NAME);
+        if ($this->accountStatus !== null) {
+            $error = !in_array($this->accountStatus, AccountStatusEnum::CASES_NAME) && AccountStatusEnum::toName($this->accountStatus) === null;
 
-        $error = AccountStatusEnum::toName($accountStatus) === null;
-
-        if ($error) {
-            throw new Exception('Must be a correct status !');
+            if ($error) {
+                throw new Exception('Must be a correct status !');
+            }
         }
     }
 

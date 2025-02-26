@@ -35,12 +35,37 @@ class DatabaseSeeder extends Seeder
                     'firstname' => 'firstname_profile_2',
                     'lastname' => 'lastname_profile_2',
                     'email' => 'profile-2@example.com',
-                    'account_status' => AccountStatusEnum::WaitingApproval
+                    'account_status' => AccountStatusEnum::Active
                 ]),
                 ProfileFactory::definition([
                     'firstname' => 'firstname_profile_3',
                     'lastname' => 'lastname_profile_3',
                     'email' => 'profile-3@example.com',
+                    'account_status' => AccountStatusEnum::Active
+                ]),
+                ProfileFactory::definition([
+                    'firstname' => 'firstname_profile_4',
+                    'lastname' => 'lastname_profile_4',
+                    'email' => 'profile-4@example.com',
+                    'account_status' => AccountStatusEnum::Active
+                ]),
+                ProfileFactory::definition([
+                    'firstname' => 'firstname_profile_5',
+                    'lastname' => 'lastname_profile_5',
+                    'email' => 'profile-5@example.com',
+                    'account_status' => AccountStatusEnum::Active
+                ]),
+
+                ProfileFactory::definition([
+                    'firstname' => 'firstname_profile_6',
+                    'lastname' => 'lastname_profile_6',
+                    'email' => 'profile-6@example.com',
+                    'account_status' => AccountStatusEnum::WaitingApproval
+                ]),
+                ProfileFactory::definition([
+                    'firstname' => 'firstname_profile_7',
+                    'lastname' => 'lastname_profile_7',
+                    'email' => 'profile-7@example.com',
                     'account_status' => AccountStatusEnum::Inactive
                 ]),
             ]);

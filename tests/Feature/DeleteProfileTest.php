@@ -66,7 +66,7 @@ class DeleteProfileTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'deleted',
+            'row_deleted',
             'profile',
         ]);
 

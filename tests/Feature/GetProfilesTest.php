@@ -28,32 +28,81 @@ class GetProfilesTest extends TestCase
             ProfileFactory::definition([
                 'firstname' => 'firstname_profile_1',
                 'lastname' => 'lastname_profile_1',
-                'email' => 'profile_1@example.com',
-                'account_status' => AccountStatusEnum::Active,
+                'email' => 'profile-1@example.com',
+                'account_status' => AccountStatusEnum::Active
             ]),
             ProfileFactory::definition([
                 'firstname' => 'firstname_profile_2',
                 'lastname' => 'lastname_profile_2',
-                'email' => 'profile_2@example.com',
-                'account_status' => AccountStatusEnum::WaitingApproval,
+                'email' => 'profile-2@example.com',
+                'account_status' => AccountStatusEnum::Active
             ]),
             ProfileFactory::definition([
                 'firstname' => 'firstname_profile_3',
                 'lastname' => 'lastname_profile_3',
-                'email' => 'profile_3@example.com',
-                'account_status' => AccountStatusEnum::Inactive,
+                'email' => 'profile-3@example.com',
+                'account_status' => AccountStatusEnum::Active
+            ]),
+            ProfileFactory::definition([
+                'firstname' => 'firstname_profile_4',
+                'lastname' => 'lastname_profile_4',
+                'email' => 'profile-4@example.com',
+                'account_status' => AccountStatusEnum::Active
+            ]),
+            ProfileFactory::definition([
+                'firstname' => 'firstname_profile_5',
+                'lastname' => 'lastname_profile_5',
+                'email' => 'profile-5@example.com',
+                'account_status' => AccountStatusEnum::Active
+            ]),
+
+            ProfileFactory::definition([
+                'firstname' => 'firstname_profile_6',
+                'lastname' => 'lastname_profile_6',
+                'email' => 'profile-6@example.com',
+                'account_status' => AccountStatusEnum::WaitingApproval
+            ]),
+            ProfileFactory::definition([
+                'firstname' => 'firstname_profile_7',
+                'lastname' => 'lastname_profile_7',
+                'email' => 'profile-7@example.com',
+                'account_status' => AccountStatusEnum::Inactive
             ]),
         ];
 
         Profile::insert($profileListData);
     }
 
-    public function test_can_retrieve_profiles_without_being_authenticated()
+    public function test_can_retrieve_profiles_without_being_authenticated_on_page_2()
     {
         $response = $this->getJson('/api/profiles');
 
         $response->assertStatus(200);
         $response->assertJsonCount(3, 'items');
+        $response->assertJsonStructure([
+            'items' => [
+                '*' => [
+                    'id',
+                    'firstname',
+                    'lastname',
+                    'email',
+                    'image',
+                    'created_at',
+                    'updated_at',
+                ],
+            ],
+            'total',
+            'per_page',
+            'current_page',
+        ]);
+    }
+
+    public function test_can_retrieve_profiles_without_being_authenticated()
+    {
+        $response = $this->getJson('/api/profiles?page=2');
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(2, 'items');
         $response->assertJsonStructure([
             'items' => [
                 '*' => [

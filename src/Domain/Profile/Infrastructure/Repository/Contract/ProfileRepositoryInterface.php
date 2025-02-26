@@ -16,4 +16,6 @@ interface ProfileRepositoryInterface
     public function delete(string $profileId): int;
 
     public function getProfileImageById(string $profileId): ?string;
+
+    public function getProfileById(string $profileId): ?Profile;
 }

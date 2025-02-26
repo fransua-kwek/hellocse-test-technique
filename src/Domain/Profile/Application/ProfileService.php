@@ -61,7 +61,7 @@ readonly class ProfileService
                 new AccountStatus($userConnected ? $item->account_status : null),
                 new Timestamp($item->created_at),
                 new Timestamp($item->updated_at),
-            ))->toArray();
+            ));
         }
 
         return [
@@ -134,10 +134,15 @@ readonly class ProfileService
         ];
     }
 
-    public function deleteById(string $profileId, string $profileImage): int
+    public function deleteById(string $profileId): array
     {
-        $this->imageService->destroy($profileImage);
+        $profile = $this->profileRepository->getProfileById($profileId);
 
-        return $this->profileRepository->delete($profileId);
+        $this->imageService->destroy($profile->image);
+
+        return [
+            'deleted' => $this->profileRepository->delete($profileId),
+            'profile' => ProfileData::fromEloquent($profile),
+        ];
     }
 }

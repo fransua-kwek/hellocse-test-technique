@@ -2,8 +2,10 @@
 
 namespace Src\Domain\Profile\Infrastructure\Repository;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
+use Src\Domain\Profile\Domain\AccountStatusEnum;
 use Src\Domain\Profile\Infrastructure\Model\Profile;
 use Src\Domain\Profile\Infrastructure\Repository\Contract\ProfileRepositoryInterface;
 
@@ -11,7 +13,7 @@ class ProfileRepository implements ProfileRepositoryInterface
 {
     public function getProfileList(int $currentPage): LengthAwarePaginator
     {
-        return Profile::query()->paginate(15, ['*'], 'page', $currentPage);
+        return Profile::query()->where('account_status', AccountStatusEnum::Active)->paginate(3, ['*'], 'page', $currentPage);
     }
 
     public function store(array $profile): Profile
@@ -38,5 +40,15 @@ class ProfileRepository implements ProfileRepositoryInterface
     public function getProfileImageById(string $profileId): ?string
     {
         return Profile::query()->select('image')->where('id', $profileId)->first()->image ?? null;
+    }
+
+    /**
+     * @param string $profileId
+     * @return Profile|null
+     * @throws ModelNotFoundException<Profile>
+     */
+    public function getProfileById(string $profileId): ?Profile
+    {
+        return Profile::query()->where('id', $profileId)->firstOrFail();
     }
 }
