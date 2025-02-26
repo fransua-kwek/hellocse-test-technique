@@ -9,7 +9,7 @@ use Src\Domain\Profile\Domain\ValueObjects\Firstname;
 use Src\Domain\Profile\Domain\ValueObjects\Lastname;
 use Src\Domain\Profile\Domain\ValueObjects\Timestamp;
 
-readonly class Profile
+class Profile
 {
     public function __construct(
         public ?string       $id,
@@ -22,6 +22,11 @@ readonly class Profile
         public Timestamp     $updatedAt,
     ) {}
 
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
+
     public function toArray(): array
     {
         return [
@@ -29,7 +34,7 @@ readonly class Profile
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'email' => $this->email,
-            'img' => $this->img->__toString(),
+            'image' => $this->img->__toString(),
             'account_status' => $this->accountStatus,
             'created_At' => $this->createdAt,
             'updated_At' => $this->updatedAt,

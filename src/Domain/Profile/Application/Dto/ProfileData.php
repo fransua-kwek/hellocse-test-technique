@@ -2,20 +2,21 @@
 
 namespace Src\Domain\Profile\Application\Dto;
 
+use Illuminate\Http\UploadedFile;
 use Src\Domain\Profile\Domain\Profile;
 use Src\Domain\Profile\Infrastructure\Request\AbstractProfileRequest;
 
 readonly class ProfileData
 {
     public function __construct(
-        public ?string       $id,
-        public string        $firstname,
-        public string        $lastname,
-        public string        $email,
-        public string        $img,
-        public ?string       $accountStatus,
-        public string        $createdAt,
-        public string        $updatedAt,
+        public ?string $id,
+        public string $firstname,
+        public string $lastname,
+        public string $email,
+        public UploadedFile|string $img,
+        public ?string $accountStatus,
+        public ?string $createdAt,
+        public ?string $updatedAt,
     ) {}
 
     public static function fromRequest(AbstractProfileRequest $request): self
@@ -25,7 +26,7 @@ readonly class ProfileData
             $request->getFirstname(),
             $request->getLastname(),
             $request->getEmail(),
-            null,
+            $request->getImage(),
             $request->getAccountStatus(),
             $request->getCreatedAt(),
             $request->getUpdatedAt()
