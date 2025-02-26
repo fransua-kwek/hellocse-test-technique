@@ -3,8 +3,12 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Src\Domain\Administrator\Infrastructure\Database\factories\AdministratorFactory;
+use Illuminate\Support\Facades\DB;
+use Src\Domain\Administrator\Infrastructure\Database\Factories\AdministratorFactory;
 use Src\Domain\Administrator\Infrastructure\Model\Administrator;
+use Src\Domain\Profile\Domain\AccountStatusEnum;
+use Src\Domain\Profile\Infrastructure\Database\Factories\ProfileFactory;
+use Src\Domain\Profile\Infrastructure\Model\Profile;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,10 +17,33 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Administrator::create(AdministratorFactory::definition([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'),
-        ]));
+        DB::transaction(function () {
+            Administrator::create(AdministratorFactory::definition([
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+                'password' => bcrypt('password'),
+            ]));
+
+            Profile::insert([
+                ProfileFactory::definition([
+                    'firstname' => 'firstname_profile_1',
+                    'lastname' => 'lastname_profile_1',
+                    'email' => 'profile-1@example.com',
+                    'account_status' => AccountStatusEnum::Active
+                ]),
+                ProfileFactory::definition([
+                    'firstname' => 'firstname_profile_2',
+                    'lastname' => 'lastname_profile_2',
+                    'email' => 'profile-2@example.com',
+                    'account_status' => AccountStatusEnum::WaitingApproval
+                ]),
+                ProfileFactory::definition([
+                    'firstname' => 'firstname_profile_3',
+                    'lastname' => 'lastname_profile_3',
+                    'email' => 'profile-3@example.com',
+                    'account_status' => AccountStatusEnum::Inactive
+                ]),
+            ]);
+        });
     }
 }

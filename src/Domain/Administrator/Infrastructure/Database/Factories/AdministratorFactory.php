@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Domain\Administrator\Infrastructure\Database\factories;
+namespace Src\Domain\Administrator\Infrastructure\Database\Factories;
 
 use Illuminate\Support\Facades\Hash;
 

@@ -13,6 +13,13 @@ You must generate jwt secret key to start using it
 php artisan jwt:secret
 ```
 
+## Files
+
+if you want to display uploaded file with `asset()`, create symbolic link :
+```bash
+php artisan storage:link
+```
+
 ## Run
 You can use serve :  
 ```bash

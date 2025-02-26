@@ -25,11 +25,6 @@ class JWTAuth implements AuthInterface
         return TymonJWTAuth::fromUser($administrator);
     }
 
-    public function logout(): void
-    {
-        auth()->logout();
-    }
-
     public function refresh(): string
     {
         try {

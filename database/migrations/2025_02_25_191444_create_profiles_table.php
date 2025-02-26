@@ -14,13 +14,10 @@ return new class extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->unsignedBigInteger('administrator_id');
-            $table->foreign('administrator_id')->references('id')->on('administrators');
-
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('firstname', 80);
+            $table->string('lastname', 80);
             $table->string('email')->unique();
-            $table->string('image')->nullable();
+            $table->string('image');
             $table->string('account_status')->default('inactive');
 
             $table->timestamps();
