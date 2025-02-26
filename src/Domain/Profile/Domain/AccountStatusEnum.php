@@ -14,12 +14,13 @@ enum AccountStatusEnum: string
         'En attente',
     ];
 
-    public static function toName(string $value): string
+    public static function toName(string $value): ?string
     {
         return match ($value) {
             self::Active->value => 'Actif',
             self::Inactive->value => 'Inactif',
             self::WaitingApproval->value => 'En attente',
+            default => null,
         };
     }
 }

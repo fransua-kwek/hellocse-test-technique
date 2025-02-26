@@ -10,8 +10,6 @@ class AdministratorServiceProvider extends ServiceProvider
 {
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
     public function boot(): void
     {
@@ -25,5 +23,4 @@ class AdministratorServiceProvider extends ServiceProvider
             AdministratorRepository::class
         );
     }
-
 }

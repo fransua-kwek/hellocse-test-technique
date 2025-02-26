@@ -11,7 +11,7 @@ class AdministratorFactory
      *
      * @return array<string, mixed>
      */
-    static public function definition(array $data): array
+    public static function definition(array $data): array
     {
         return [
             'name' => $data['name'] ?? fake()->name(),

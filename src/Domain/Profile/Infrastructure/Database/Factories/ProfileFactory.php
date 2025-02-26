@@ -13,7 +13,7 @@ class ProfileFactory
      *
      * @return array<string, string|AccountStatusEnum|null>
      */
-    static public function definition(array $data): array
+    public static function definition(array $data): array
     {
         return [
             'id' => $data['id'] ?? Str::uuid(),

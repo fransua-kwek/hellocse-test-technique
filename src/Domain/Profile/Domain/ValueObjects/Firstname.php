@@ -7,7 +7,6 @@ use Exception;
 final readonly class Firstname
 {
     /**
-     * @param string $firstname
      * @throws Exception
      */
     public function __construct(private string $firstname)

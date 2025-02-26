@@ -12,14 +12,14 @@ use Src\Domain\Profile\Domain\ValueObjects\Timestamp;
 class Profile
 {
     public function __construct(
-        public ?string       $id,
-        public Firstname     $firstname,
-        public Lastname      $lastname,
-        public Email         $email,
-        public Image         $img,
+        public ?string $id,
+        public Firstname $firstname,
+        public Lastname $lastname,
+        public Email $email,
+        public Image $img,
         public AccountStatus $accountStatus,
-        public Timestamp     $createdAt,
-        public Timestamp     $updatedAt,
+        public Timestamp $createdAt,
+        public Timestamp $updatedAt,
     ) {}
 
     public function setId(string $id): void
@@ -27,17 +27,23 @@ class Profile
         $this->id = $id;
     }
 
-    public function toArray(): array
+    public function toArray(bool $withoutCreatedAt = false): array
     {
-        return [
+        $array = [
             'id' => $this->id,
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'email' => $this->email,
             'image' => $this->img->__toString(),
             'account_status' => $this->accountStatus,
-            'created_At' => $this->createdAt,
-            'updated_At' => $this->updatedAt,
+            'created_at' => $this->createdAt,
+            'updated_at' => $this->updatedAt,
         ];
+
+        if ($withoutCreatedAt) {
+            unset($array['created_at']);
+        }
+
+        return $array;
     }
 }

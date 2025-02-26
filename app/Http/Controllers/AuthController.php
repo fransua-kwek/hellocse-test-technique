@@ -20,30 +20,25 @@ class AuthController extends Controller
 
     /**
      * Get a JWT via given credentials.
-     *
-     * @param LoginRequest $request
-     * @return JsonResponse
      */
     public function login(LoginRequest $request): JsonResponse
     {
         try {
             $token = $this->auth->login([
                 'email' => $request->getUserUsername(),
-                'password' => $request->getUserPassword()
+                'password' => $request->getUserPassword(),
             ]);
 
             return $this->respondWithToken($token);
         } catch (ValidationException $validationException) {
             return response()->json($validationException->errors(), Response::HTTP_BAD_REQUEST);
         } catch (AuthenticationException) {
-            return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED );
+            return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
     }
 
     /**
      * Refresh a token.
-     *
-     * @return JsonResponse
      */
     public function refresh(): JsonResponse
     {
@@ -58,17 +53,13 @@ class AuthController extends Controller
 
     /**
      * Get the token array structure.
-     *
-     * @param  string $token
-     *
-     * @return JsonResponse
      */
     protected function respondWithToken(string $token): JsonResponse
     {
         return response()->json([
             'accessToken' => $token,
             'token_type' => 'bearer',
-            'expires_in' => config('jwt.ttl') * 1,
+            'expires_in' => config('jwt.ttl'),
         ]);
     }
 }

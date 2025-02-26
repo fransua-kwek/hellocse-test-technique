@@ -10,6 +10,7 @@ interface AuthInterface
      * @throws AuthenticationException
      */
     public function login(array $credentials): string;
+
     /**
      * @throws AuthenticationException
      */

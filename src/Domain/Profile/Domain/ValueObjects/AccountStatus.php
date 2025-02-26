@@ -8,12 +8,11 @@ use Src\Domain\Profile\Domain\AccountStatusEnum;
 final readonly class AccountStatus
 {
     /**
-     * @param string|null $accountStatus
      * @throws Exception
      */
     public function __construct(private ?string $accountStatus)
     {
-        $error = !in_array($accountStatus, AccountStatusEnum::CASES_NAME);
+        $error = ! in_array($accountStatus, AccountStatusEnum::CASES_NAME);
 
         $error = AccountStatusEnum::toName($accountStatus) === null;
 

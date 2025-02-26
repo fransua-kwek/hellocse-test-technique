@@ -13,11 +13,9 @@ class GetProfiles extends Controller
 {
     public function __construct(
         private readonly ProfileService $profileService
-    ){}
+    ) {}
 
     /**
-     * @param GetProfileRequest $request
-     * @return JsonResponse
      * @throws Exception
      */
     public function __invoke(GetProfileRequest $request): JsonResponse

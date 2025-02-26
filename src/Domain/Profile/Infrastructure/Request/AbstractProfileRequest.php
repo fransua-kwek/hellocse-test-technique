@@ -27,9 +27,9 @@ abstract class AbstractProfileRequest extends FormRequest
         return $this->input('email');
     }
 
-    public function getImage(): UploadedFile
+    public function getImage(): null|string|UploadedFile
     {
-        return $this->file('image');
+        return $this->file('image') ?? $this->input('image');
     }
 
     public function getAccountStatus(): string

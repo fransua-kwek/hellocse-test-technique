@@ -8,8 +8,7 @@ use Tymon\JWTAuth\JWT;
 
 class JwtMiddleware
 {
-    public function __construct(private readonly JWT $jwt)
-    {}
+    public function __construct(private readonly JWT $jwt) {}
 
     public function handle($request, Closure $next)
     {

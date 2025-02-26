@@ -9,13 +9,9 @@ use Src\Domain\Profile\Application\ProfileService;
 
 class CreateProfile
 {
-    public function __construct(private readonly ProfileService $profileService)
-    {
-    }
+    public function __construct(private readonly ProfileService $profileService) {}
 
     /**
-     * @param CreateProfileRequest $request
-     * @return JsonResponse
      * @throws \Exception
      */
     public function __invoke(CreateProfileRequest $request): JsonResponse

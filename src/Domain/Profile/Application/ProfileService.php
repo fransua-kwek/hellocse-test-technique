@@ -3,6 +3,8 @@
 namespace Src\Domain\Profile\Application;
 
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\UploadedFile;
 use Src\Domain\Image\Application\ImageService;
 use Src\Domain\Image\Domain\ValueObjects\Image;
 use Src\Domain\Profile\Application\Dto\ProfileData;
@@ -12,20 +14,18 @@ use Src\Domain\Profile\Domain\ValueObjects\Email;
 use Src\Domain\Profile\Domain\ValueObjects\Firstname;
 use Src\Domain\Profile\Domain\ValueObjects\Lastname;
 use Src\Domain\Profile\Domain\ValueObjects\Timestamp;
+use Src\Domain\Profile\Domain\ValueObjects\Uuid;
 use Src\Domain\Profile\Infrastructure\Repository\Contract\ProfileRepositoryInterface;
-use Exception;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\JWT;
 
-class ProfileService
+readonly class ProfileService
 {
     public function __construct(
-        readonly private ProfileRepositoryInterface $profileRepository,
-        readonly private ImageService $imageService,
-        private readonly JWT $jwt,
-    )
-    {
-    }
+        private ProfileRepositoryInterface $profileRepository,
+        private ImageService $imageService,
+        private JWT $jwt,
+    ) {}
 
     /**
      * @return array{
@@ -34,6 +34,7 @@ class ProfileService
      *     per_page: int,
      *     current_page: int
      * }
+     *
      * @throws Exception
      */
     public function getProfileList(int $currentPage): array
@@ -67,24 +68,25 @@ class ProfileService
             'items' => $items,
             'total' => $paginateResult->total(),
             'per_page' => $paginateResult->perPage(),
-            'current_page' => $paginateResult->currentPage()
+            'current_page' => $paginateResult->currentPage(),
         ];
     }
 
     /**
-     * @param ProfileData $profile
-     * @return ProfileData
      * @throws Exception
      */
-    public function createProfile(ProfileData $profile): ProfileData {
-        $filepath = $this->imageService->store($profile->img);
+    public function createProfile(ProfileData $profile): ProfileData
+    {
+        $valueObjectImg = $profile->img instanceof UploadedFile
+            ? new Image($profile->img, null)
+            : new Image(null, $profile->img);
 
         $profile = new Profile(
             null,
             new Firstname($profile->firstname),
             new Lastname($profile->lastname),
             new Email($profile->email),
-            new Image(null, $filepath),
+            $valueObjectImg,
             new AccountStatus($profile->accountStatus),
             new Timestamp(Carbon::now()),
             new Timestamp(Carbon::now()),
@@ -92,12 +94,50 @@ class ProfileService
 
         $model = $this->profileRepository->store($profile->toArray());
 
-        if (!empty($model->id)) {
+        if (! empty($model->id)) {
             $profile->setId($model->id);
         } else {
             throw new Exception('Error creating profile');
         }
 
         return ProfileData::fromDomain($profile);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function updateProfileById(string $profileId, ProfileData $profile): array
+    {
+        $filepath = $profile->img;
+        if ($filepath instanceof UploadedFile) {
+            $oldProfileImage = $this->profileRepository->getProfileImageById($profileId);
+            $this->imageService->destroy($oldProfileImage);
+            $filepath = $this->imageService->store($profile->img);
+        }
+
+        $profile = new Profile(
+            new Uuid($profileId),
+            new Firstname($profile->firstname),
+            new Lastname($profile->lastname),
+            new Email($profile->email),
+            new Image(null, $filepath),
+            new AccountStatus($profile->accountStatus),
+            new Timestamp($profile->createdAt),
+            new Timestamp(Carbon::now()),
+        );
+
+        $modified = $this->profileRepository->update($profileId, $profile->toArray(true));
+
+        return [
+            'modified' => $modified,
+            'profile' => ProfileData::fromDomain($profile),
+        ];
+    }
+
+    public function deleteById(string $profileId, string $profileImage): int
+    {
+        $this->imageService->destroy($profileImage);
+
+        return $this->profileRepository->delete($profileId);
     }
 }

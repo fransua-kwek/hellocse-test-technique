@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Feature;
+
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Src\Domain\Administrator\Infrastructure\Database\Factories\AdministratorFactory;
 use Src\Domain\Administrator\Infrastructure\Model\Administrator;
@@ -18,7 +20,7 @@ class GetProfilesTest extends TestCase
      */
     private array $profileList;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -27,19 +29,19 @@ class GetProfilesTest extends TestCase
                 'firstname' => 'firstname_profile_1',
                 'lastname' => 'lastname_profile_1',
                 'email' => 'profile_1@example.com',
-                'account_status' => AccountStatusEnum::Active
+                'account_status' => AccountStatusEnum::Active,
             ]),
             ProfileFactory::definition([
                 'firstname' => 'firstname_profile_2',
                 'lastname' => 'lastname_profile_2',
                 'email' => 'profile_2@example.com',
-                'account_status' => AccountStatusEnum::WaitingApproval
+                'account_status' => AccountStatusEnum::WaitingApproval,
             ]),
             ProfileFactory::definition([
                 'firstname' => 'firstname_profile_3',
                 'lastname' => 'lastname_profile_3',
                 'email' => 'profile_3@example.com',
-                'account_status' => AccountStatusEnum::Inactive
+                'account_status' => AccountStatusEnum::Inactive,
             ]),
         ];
 
@@ -62,11 +64,11 @@ class GetProfilesTest extends TestCase
                     'image',
                     'created_at',
                     'updated_at',
-                ]
+                ],
             ],
-            "total",
-            "per_page",
-            "current_page"
+            'total',
+            'per_page',
+            'current_page',
         ]);
     }
 
@@ -80,7 +82,7 @@ class GetProfilesTest extends TestCase
         $token = app(JWT::class)->fromUser($admin);
 
         $response = $this->getJson('/api/profiles', [
-            'Authorization' => "Bearer $token"
+            'Authorization' => "Bearer $token",
         ]);
 
         $response->assertStatus(200);
@@ -96,11 +98,11 @@ class GetProfilesTest extends TestCase
                     'created_at',
                     'updated_at',
                     'status',
-                ]
+                ],
             ],
-            "total",
-            "per_page",
-            "current_page"
+            'total',
+            'per_page',
+            'current_page',
         ]);
     }
 }

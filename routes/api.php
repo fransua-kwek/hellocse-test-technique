@@ -25,7 +25,7 @@ Route::middleware(JwtMiddleware::class)->group(function () {
 
     Route::group(['prefix' => 'profiles'], function () {
         Route::post('/', CreateProfile::class);
-        Route::delete('/{id}', DeleteProfile::class)->where('id', '[0-9]+');
-        Route::post('/{id}', UpdateProfile::class)->where('id', '[0-9]+');
+        Route::delete('/{id}', DeleteProfile::class);
+        Route::post('/{id}', UpdateProfile::class);
     });
 });

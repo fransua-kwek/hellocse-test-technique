@@ -13,7 +13,7 @@ class AuthTest extends TestCase
 
     private Administrator $user;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -77,7 +77,7 @@ class AuthTest extends TestCase
     public function test_can_not_refresh_jwt_token_with_invalid_credentials()
     {
         $response = $this->postJson('/api/auth/refresh', [
-            'Authorization' => "Bearer 1NC0RR3CT_T0K3N",
+            'Authorization' => 'Bearer 1NC0RR3CT_T0K3N',
         ]);
 
         $response->assertStatus(401);

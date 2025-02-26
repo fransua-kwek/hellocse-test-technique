@@ -11,15 +11,14 @@ use Tymon\JWTAuth\Facades\JWTAuth as TymonJWTAuth;
 
 class JWTAuth implements AuthInterface
 {
-    public function __construct(private readonly AdministratorRepositoryInterface $administratorRepository)
-    {}
+    public function __construct(private readonly AdministratorRepositoryInterface $administratorRepository) {}
 
     public function login(array $credentials): string
     {
         $administrator = $this->administratorRepository->getByEmail($credentials['email']);
 
-        if (!$administrator || !auth()->attempt($credentials)) {
-            throw new AuthenticationException();
+        if (! $administrator || ! auth()->attempt($credentials)) {
+            throw new AuthenticationException;
         }
 
         return TymonJWTAuth::fromUser($administrator);

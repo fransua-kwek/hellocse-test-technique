@@ -4,6 +4,7 @@ namespace Src\Domain\Profile\Application\Dto;
 
 use Illuminate\Http\UploadedFile;
 use Src\Domain\Profile\Domain\Profile;
+use Src\Domain\Profile\Infrastructure\Model\Profile as ProfileEloquent;
 use Src\Domain\Profile\Infrastructure\Request\AbstractProfileRequest;
 
 readonly class ProfileData
@@ -47,6 +48,20 @@ readonly class ProfileData
         );
     }
 
+    public static function fromEloquent(ProfileEloquent $profile): self
+    {
+        return new static(
+            $profile->id,
+            $profile->firstname,
+            $profile->lastname,
+            $profile->email,
+            $profile->image,
+            $profile->account_status,
+            $profile->created_at,
+            $profile->updated_at,
+        );
+    }
+
     public function toArray(): array
     {
         $array = [
@@ -54,12 +69,12 @@ readonly class ProfileData
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'email' => $this->email,
-            'image' => asset('storage/' . $this->img),
+            'image' => asset('storage/'.$this->img),
             'created_at' => $this->createdAt,
             'updated_at' => $this->updatedAt,
         ];
 
-        if (!empty($this->accountStatus)) {
+        if (! empty($this->accountStatus)) {
             $array['status'] = $this->accountStatus;
         }
 

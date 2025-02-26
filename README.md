@@ -52,12 +52,6 @@ https://github.com/PHP-CS-Fixer/PHP-CS-Fixer
 composer csfix
 ```
 
-### phpstan
-https://phpstan.org/user-guide/getting-started
-```bash
-composer phpstan
-```
-
 ### Tests
 ```bash
 composer phpunit

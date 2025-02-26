@@ -7,7 +7,6 @@ use Exception;
 final readonly class Email
 {
     /**
-     * @param string $email
      * @throws Exception
      */
     public function __construct(private string $email)
@@ -16,7 +15,7 @@ final readonly class Email
             throw new Exception('Email must be a non-empty string !');
         }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new Exception('Email must be a valid email address !');
         }
     }

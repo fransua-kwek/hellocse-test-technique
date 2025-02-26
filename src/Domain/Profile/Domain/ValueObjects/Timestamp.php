@@ -10,10 +10,11 @@ final readonly class Timestamp
     public function __construct(private readonly string $timestamp)
     {
         /**
-         * @param string $lastname
+         * @param  string  $lastname
+         *
          * @throws Exception
          */
-        if (empty($this->timestamp) && !$this->timestamp instanceof DateTime) {
+        if (empty($this->timestamp) && ! $this->timestamp instanceof DateTime) {
             throw new Exception('timestamp must be a valid date !');
         }
     }
